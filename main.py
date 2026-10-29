@@ -5,6 +5,8 @@ from datetime import datetime,timezone
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///project.db"
 db=SQLAlchemy(app)
+with app.app_context():
+    db.create_all()
 
 class Todo(db.Model):
     sno=db.Column(db.Integer,primary_key=True)
