@@ -5,8 +5,7 @@ from datetime import datetime,timezone
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///project.db"
 db=SQLAlchemy(app)
-with app.app_context():
-    db.create_all()
+
 
 class Todo(db.Model):
     sno=db.Column(db.Integer,primary_key=True)
@@ -15,6 +14,9 @@ class Todo(db.Model):
     time=db.Column(db.DateTime,default=lambda: datetime.now(timezone.utc))
     def __repr__(self):
         return f"{self.sno} - {self.task}"
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/',methods=['GET','POST'])
 def adding_data():
@@ -47,4 +49,5 @@ def update(sno):
         return redirect('/')
     return render_template("update.html", alltodo=alltodo)
 if __name__ == '__main__':
+
     app.run(debug=True)
